@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'dart:convert';
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 
 void main() => runApp(new MyApp());
 
@@ -13,7 +13,6 @@ splitHtmlBodyToJson(String h) {
 }
 
 class MyApp extends StatelessWidget {
-  //gittest
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -28,15 +27,15 @@ class SHome extends StatefulWidget {
 
 class SHomeState extends State<SHome> {
   final String str11 = 'RomilaHe';
-  Response res;
-  void getHttp() async {
-    try {
-      res = await Dio().get("http://192.168.9.204/a.html");
-      // debugPrint(res.data.toString());
-    } catch (e) {
-      return print(e);
-    }
-  }
+  // Response res;
+  // void getHttp() async {
+  //   try {
+  //     res = await Dio().get("http://192.168.9.204/a.html");
+  //     // debugPrint(res.data.toString());
+  //   } catch (e) {
+  //     return print(e);
+  //   }
+  // }
 
   getIcon(int i) {
     if (i == 1) {
@@ -51,10 +50,10 @@ class SHomeState extends State<SHome> {
   }
 
   _mylist() {
-    getHttp();
-    // List decoded = jsonDecode(
-    //     '[{"type":1,"listname":"收件箱","num":6},{"type":2,"listname":"全部","num":24},{"type":3,"listname":"2019","num":8},{"type":3,"listname":"2018","num":4},{"type":3,"listname":"Someday/Maybe","num":6},{"type":3,"listname":"剧集","num":16},{"type":3,"listname":"电影","num":""},{"type":3,"listname":"书单","num":13},{"type":3,"listname":"工具收藏","num":11},{"type":4,"listname":"新建清单","num":""}]');
-    List decoded = splitHtmlBodyToJson(res.data.toString());
+    // getHttp();
+    List decoded = jsonDecode(
+        '[{"type":1,"listname":"收件箱","num":6},{"type":2,"listname":"全部","num":24},{"type":3,"listname":"2019","num":8},{"type":3,"listname":"2018","num":4},{"type":3,"listname":"Someday/Maybe","num":6},{"type":3,"listname":"剧集","num":16},{"type":3,"listname":"电影","num":""},{"type":3,"listname":"书单","num":13},{"type":3,"listname":"工具收藏","num":11},{"type":4,"listname":"新建清单","num":""}]');
+    // List decoded = splitHtmlBodyToJson(res.data.toString());
     List<Widget> widgets = [];
     for (int i = 0; i < decoded.length; i++) {
       widgets.add(
