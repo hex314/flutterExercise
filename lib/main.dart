@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'dart:ui';
 
 void main() => runApp(new MyApp());
 
@@ -12,7 +13,12 @@ splitHtmlBodyToJson(String h) {
   return jsonDecode(ccc);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  createState()=> new MyHome();
+}
+
+class MyHome extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -31,6 +37,8 @@ class SHomeState extends State<SHome> {
     super.initState();
     getHttp();
   }
+
+
   final String str11 = 'RomilaHe';
   Response res;
   void getHttp() async {
@@ -38,7 +46,6 @@ class SHomeState extends State<SHome> {
     try {
       rest = await Dio().get("http://192.168.9.204/a.html");
       // debugPrint(res.data.toString());
-      print(rest);
     } catch (e) {
       return print(e);
     }
@@ -129,21 +136,14 @@ class SHomeState extends State<SHome> {
         foregroundColor: Colors.purple[400],
         cacheImage: true,
         onTap: () {
-          print('avatar is pressed');
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AvatarPage()));
+          // print('avatar is pressed');
         },
         showInitialTextAbovePicture: true,
         imageUrl: 'https://static.haha.mx/images/topic_default.png',
       ),
       width: 10.0,
       height: 10.0,
-      //   IconButton(
-      //   icon: Icon(
-      //     Icons.menu,
-      //     size: 32,
-      //     color: Colors.white,
-      //   ),
-      //   onPressed: () => debugPrint('menu pressed'),
-      // ),
     );
     return new Scaffold(
       appBar: new AppBar(
@@ -173,6 +173,53 @@ class SHomeState extends State<SHome> {
         ],
       ),
       body: res!=null ?  new ListView(children: _mylist(),) : new Text("loading")
+    );
+  }
+}
+
+
+class AvatarPage extends StatefulWidget{
+  @override  
+  createState()=>new AvatarPageState();
+}
+
+class AvatarPageState extends State<AvatarPage>{
+  Response res;
+  void getHttp() async {
+    Response rest;
+    try {
+      rest = await Dio().post("http://192.168.8.211/cpl_api/game_task_list",data: {"version":3,"device_type":1});
+      // debugPrint(res.data.toString());
+    } catch (e) {
+      return print(e);
+    }
+    setState(() {
+      res=rest;
+    });
+  }
+  void initState() {
+    super.initState();
+    getHttp();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar:PreferredSize(
+      child:AppBar(
+      backgroundColor: Colors.teal[800],
+      titleSpacing: 0.0,
+      centerTitle: false,
+      title:Text('设置',style: new TextStyle(color: Colors.grey.withOpacity(0.5))),
+    ), 
+    preferredSize: Size.fromHeight(window.physicalSize.height * 0.10),
+    ) ,
+    body: Center(
+      child: RaisedButton(
+        onPressed: (){
+          Navigator.pop(context);
+        },
+        child: res!=null ?new Image.network(jsonDecode(res.data)['data']['data_list'][0]['icon']) :Text('loading'),
+      ),
+    ),
     );
   }
 }
